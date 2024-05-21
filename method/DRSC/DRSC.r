@@ -164,7 +164,7 @@ set.seed(seed)
 
 # Load configuration
 feature_method <- config$feature_method
-n_genes <- congig$n_genes
+n_genes <- config$n_genes
 
 
 # You can use the data as SingleCellExperiment
@@ -181,6 +181,12 @@ seurat_obj <- NormalizeData(seurat_obj, verbose = F)
 # Variable features (if given - opt takes priority)
 n_genes <- ifelse(is.null(opt$n_genes), n_genes, opt$n_genes)
 
+# Fit the DRSC requirement
+if (!("row" %in% colnames(seurat_obj@meta.data) & "col" %in% colnames(seurat_obj@meta.data))){
+    seurat_obj@meta.data$col <- sce@metadata$spatialCoords[rownames(seurat_obj@meta.data), 1]
+    seurat_obj@meta.data$row <- sce@metadata$spatialCoords[rownames(seurat_obj@meta.data), 2]
+}
+
 if (nrow(seurat_obj) > n_genes){
     if (feature_method == "FindVariableFeatures") {
         seurat_obj <- FindVariableFeatures(seurat_obj, nfeatures = n_genes, verbose = FALSE)
@@ -195,13 +201,6 @@ if (nrow(seurat_obj) > n_genes){
     seurat_obj[["originalexp"]]@var.features <- rownames(rowData(sce))
 }
 
-
-
-# Fit the DRSC requirement
-if (!("row" %in% colnames(seurat_obj@meta.data) & "col" %in% colnames(seurat_obj@meta.data))){
-    seurat_obj@meta.data$col <- sce@metadata$spatialCoords[rownames(seurat_obj@meta.data), 1]
-    seurat_obj@meta.data$row <- sce@metadata$spatialCoords[rownames(seurat_obj@meta.data), 2]
-}
 seu_drsc <- DR.SC::DR.SC(seurat_obj, K = n_clusters, platform = technology)
 
 # The data.frames with observations may contain a column "selected" which you need to use to
