@@ -1,6 +1,6 @@
 {
     "method": "louvain", 
-    "refine": false, 
+    "refine": true, 
     "alpha": 1, 
     "p": 0.5, 
     "n_pcs": 50, 
