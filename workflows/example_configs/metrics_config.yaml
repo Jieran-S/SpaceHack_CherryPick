@@ -10,20 +10,18 @@ datasets:
   - abc_atlas_wmb_thalamus
   - libd_dlpfc                            # Visium Comparison
   - visium_breast_cancer_SEDR
-#  - stereoseq_developing_Drosophila_embryos_larvae
-#  - "stereoseq_mouse_embryo"
   - visium_chicken_heart
 
 
 use_metrics:
-  - "ARI"
-  - "Completeness"
-  - "Entropy"
-  - "FMI"
+#  - "ARI"
+#  - "Completeness"
+#  - "Entropy"
+#  - "FMI"
 #  - "Homogeneity"
 #  - "MCC"
   - "NMI"
-  - "domain-specific-f1"
+#  - "domain-specific-f1"
 #  - "jaccard"
 #  - "V_measure"                        #Config, GT
 #  - "LISI"                             #Config, embed, GT
