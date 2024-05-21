@@ -1,0 +1,5 @@
+{ 
+    "n_neighbors" : 15, 
+    "n_pcs": 50, 
+    "clustering" : "louvain"
+}

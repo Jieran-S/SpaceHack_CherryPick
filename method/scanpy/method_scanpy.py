@@ -190,7 +190,7 @@ if config['clustering'] not in ["louvain", "leiden"]:
     label_df = binary_search(adata, n_clust_target=n_clusters, method="leiden", seed = seed)
 else:
     label_df = binary_search(adata, n_clust_target=n_clusters, method=config['clustering'], 
-                             seed = seed, flavor = config["flavor"])
+                             seed = seed)
 
 # sc.tl.leiden(adata, resolution=config["resolution"], random_state=seed)
 
