@@ -1,0 +1,19 @@
+﻿,,BayesSpace,DRSC ,precast,bass,GraphST,SEDR,STAGATE,SpaceFlow,spaGCN,BANKSY,CellCharter,stardust,scanpy,seurat
+Availability,Method's code is freely available,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Availability,The code can be run on a freely available platform,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Packaging,"The code is available on a public version controlled repository, such as Github",1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Packaging,"The code can be easily installed through a repository such as CRAN, Bioconductor, PyPI, CPAN, debian packages, ...",1,1,1,0,1,0,0,1,1,1,1,0,1,1
+Packaging,Dependencies are clearly stated in the tutorial or in the code,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+License,The code is licensed,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+License,License allows academic use,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Tutorial,A tutorial or vignette is available,1,1,1,1,1,1,1,1,1,1,1,0.5,1,1
+Tutorial,Following the tutorial step by step leads to no issues/errors,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Tutorial,"The tutorial shows the method's usefulness on several (>2 = 1), 2 (0.5), 1 (0.25) or no scenarios.",1,0.5,1,1,1,1,1,0.25,0.5,1,0.5,0.25,1,1
+Code quality,The purpose and usage of functions/commands is documented,1,1,1,1,0.5,0,0.5,1,0,1,1,1,1,1
+Code quality,The parameters of functions/commands are documented,1,1,1,1,0.5,0,0.5,1,0,1,1,1,1,1
+Code quality,Does the package allow plotting of (intermediate) results?,1,1,1,0,0,0,1,1,0,0,1,0,1,1
+Code quality,The output of functions/commands is documented,1,1,1,1,0.5,0,0.5,1,0,1,1,1,1,1
+Peer review,The paper is published in a peer-reviewed journal,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Accuracy evaluation,"The paper shows the method's usefulness on several (>3 = 1), three(0.75), two (0.5), one (0.25) or no real datasets.",1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Accuracy evaluation,The paper quantifies the accuracy of the method given a simulated dataset,1,1,1,1,1,0,1,0,0,1,0,0,1,1
+Benchmarking,The paper compares the performances of the method against other published methods,1,1,1,1,1,1,1,1,1,1,1,1,1,1

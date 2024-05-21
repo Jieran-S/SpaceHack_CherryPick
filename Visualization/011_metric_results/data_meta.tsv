@@ -1,0 +1,8 @@
+Name (Github)	Name	Technology	Resolution	Species	Tissue	Release year	Sample	Histology	Genes	Cells	N_Cluster
+libd_dlpfc	DLPFC	Visium	55 micron	Human	Brain	2021	12	Yes			
+visium_chicken_heart	DECH	Visium	55 micron	Chicken	Heart	2021	4	Yes			
+visium_breast_cancer_SEDR	BRCA1	Visium	55 micron	Human	Breast	2021	1	Yes			
+abc_atlas_wmb_thalamus	ABCA	Merfish	Subcellular	Mouse	Brain	2023	6	No 			
+STARmap_plus	MCNS	STARmap Plus	Subcellular	Mouse 	Brain	2023	8	No 			
+xenium-mouse-brain-SergioSalas	XMB	Xenium	Subcellular	Mouse	Brain	2023	1	No			
+stereoseq_olfactory_bulb	SOB	Stereoseq	25 micron	Mouse	Brain	2022	1	No			
