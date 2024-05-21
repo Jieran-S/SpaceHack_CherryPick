@@ -1,4 +1,4 @@
 {
-    "n_vars": 3000,
-    "n_neighbours": 15
+    "n_vars": 1000,
+    "n_neighbours": 50
 }
