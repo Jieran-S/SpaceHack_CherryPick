@@ -6,6 +6,7 @@
 # Author_and_contribution: Meghan Turner; wrote code in file, co-wrote 
 #                                         initial versions of thalamus 
 #                                         subsetting functions
+#%%
 
 import argparse
 from pathlib import Path
@@ -34,9 +35,9 @@ BRAIN_LABEL = 'C57BL6J-638850'
 CCF_VERSION = '20230630'
 
 
+# %%
 
-
-
+ 
 ''' 
 --------------------------------------------------------------------------------
 THALAMUS SUBSET FUNCTIONS ------------------------------------------------------
@@ -82,11 +83,14 @@ def load_th_subset_adata(version=CURRENT_VERSION, specimen=BRAIN_LABEL,
     cells_md_df = get_cell_metadata_df(version=version, specimen=specimen,
                                        flip_y=flip_y, drop_unused=True)
     # label TH+ZI subset of cells
+    # TODO: Change subset function (skip this step to keep whole ds)
+    """
     cells_md_df = label_thalamus_spatial_subset(cells_md_df,
                                                 flip_y=flip_y,
                                                 field_name=field_name)
     # subset cell metadata to just TH+ZI labeled cells
     cells_md_df = cells_md_df[cells_md_df[field_name]].copy().drop(columns=[field_name])
+    """
     # use cell_labels to correctly subset counts to match cell metadata
     cell_labels = cells_md_df.index
     adata = adata[adata.obs_names.intersection(cell_labels)]
@@ -110,28 +114,20 @@ def load_th_subset_adata(version=CURRENT_VERSION, specimen=BRAIN_LABEL,
     adata.var.rename(columns={'gene_symbol':'gene_name'}, inplace=True)
 
     # filter out non-neuronal cells, plus non-thalamic classes
-    adata = filter_adata_by_class(adata, filter_nonneuronal=True,
-                                  filter_midbrain=True)
-
-    # curate sections to those with reasonable alignment to CCF parcellation
-    adata = adata[( (adata.obs['z_reconstructed'] > 6.3)
-                    & (adata.obs['z_reconstructed'] < 6.9) 
-                  )
-                  | ( (adata.obs['z_reconstructed'] > 7.1)
-                    & (adata.obs['z_reconstructed'] < 8.1) 
-                    )]
+    # adata = filter_adata_by_class(adata, filter_nonneuronal=True,
+    #                               filter_midbrain=False)
     
     return adata
     
 
-def filter_adata_by_class(th_zi_adata, filter_nonneuronal=True,
-                          filter_midbrain=True):
+def filter_adata_by_class(adata, filter_nonneuronal=True,
+                          filter_midbrain=False):
     ''' Filters anndata object to only include cells from specific taxonomy 
     classes. Defaults to include only neuronal cells from TH+ZI classes
 
     Parameters
     ----------
-    th_zi_adata
+    adata
         anndata object containing the ABC Atlas MERFISH dataset
     filter_nonneuronal : bool, default=True
         filters out non-neuronal classes
@@ -140,22 +136,21 @@ def filter_adata_by_class(th_zi_adata, filter_nonneuronal=True,
         in analyzing midbrain-thalamus boundary in the anterior
     '''
     # hardcoded class categories
-    th_zi_dataset_classes = ['12 HY GABA', '17 MH-LH Glut', '18 TH Glut']
+    # th_zi_dataset_classes = ['12 HY GABA', '17 MH-LH Glut', '18 TH Glut']
     midbrain_classes = ['19 MB Glut', '20 MB GABA']
     nonneuronal_classes = ['30 Astro-Epen', '31 OPC-Oligo', '33 Vascular',
                            '34 Immune']
 
-    # always keep th_zi_dataset_classes
-    classes_to_keep = th_zi_dataset_classes.copy()
+    classes_to_filter = []
 
     # optionally include midbrain and/or nonneuronal classes
     if not filter_midbrain:
-        classes_to_keep += midbrain_classes
+        classes_to_filter += midbrain_classes
     if not filter_nonneuronal:
-        classes_to_keep += nonneuronal_classes
+        classes_to_filter += nonneuronal_classes
 
-    th_zi_adata = th_zi_adata[th_zi_adata.obs['class'].isin(classes_to_keep)]
-    return th_zi_adata
+    adata = adata[~adata.obs['class'].isin(classes_to_filter)]
+    return adata
 
 def label_thalamus_spatial_subset(cells_df, flip_y=False, 
                                   field_name='TH_ZI_dataset',
@@ -552,8 +547,8 @@ def split_adata_into_components(adata):
                                    'z_reconstructed':'z'},
                           inplace=True)
     counts = adata.X.astype('int')  # CSR sparse matrix as dtype-int64
-    labels_df = adata.obs[['parcellation_substructure', 'label_confidence']].copy()
-    labels_df.rename(columns={'parcellation_substructure':'label'}, 
+    labels_df = adata.obs[['parcellation_division', 'label_confidence']].copy()
+    labels_df.rename(columns={'parcellation_division':'label'}, 
                      inplace=True)
     
     return coordinates_df, observations_df, features_df, counts, labels_df
@@ -603,7 +598,7 @@ def generate_sample_df(adata):
         # for determining the n_clusters to input into various methods, but
         # if this fails to work, alternatives to try would be length of 
         # unique: ['parcellation_substructure', 'supertype']
-        n_cl_sec = len(sec_adata.obs['subclass'].unique())
+        n_cl_sec = len(sec_adata.obs['parcellation_division'].unique())
         n_clusters_ls.append(n_cl_sec)
 
     # put it all together in a df
@@ -615,7 +610,7 @@ def generate_sample_df(adata):
                                     'n_clusters':n_clusters_ls
                                    })
     return sample_df
-
+#%%
 
 '''
 --------------------------------------------------------------------------------
@@ -641,6 +636,9 @@ if __name__=='__main__':
     # add label confidence for parcellation substructures 
     adata_abc = add_label_confidence_to_obs(adata_abc)
 
+    # Make cell name into string to force R-related methods
+    adata_abc.obs_names = "cell_" + adata_abc.obs_names
+
     # convert xyz coordinates from mm to um
     factor = 1000
     adata_abc.obs[['x_reconstructed', 
@@ -653,7 +651,9 @@ if __name__=='__main__':
     # img = None  # optional
 
     # Write out each z section as a separate sample -----------------------------
-    sections = sorted(adata_abc.obs['z_reconstructed'].unique())
+    # sections = sorted(adata_abc.obs['z_reconstructed'].unique())
+    # Select few targeted slices
+    sections = [6400.0, 6600.0, 6800.0, 7200.0, 7800.0, 8000.0]
     for sec in sections:
         sec_adata = adata_abc[adata_abc.obs['z_reconstructed']==sec]
         
