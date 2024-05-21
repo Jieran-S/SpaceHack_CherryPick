@@ -191,11 +191,10 @@ spe <- get_SpatialExperiment(
 )
 
 if (technology %in% c("Visium", "ST")){
-    positions <- colData(spe)[,c(1:2)]
+    positions <- colData(spe)[,c("row", "col")]
 } else {
     positions <- SpatialExperiment::spatialCoords(spe)
 }
-
 
 # Set up BASS object
 #list("experiment" = SummarizedExperiment::assay(spe, "logcounts")),
