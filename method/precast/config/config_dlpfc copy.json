@@ -1,9 +1,0 @@
-{
-    "gene_number": 2000,
-    "method": "HVGs",
-    "maxIter": 30,
-    "preminspots": 20,
-    "preminfeatures" : 20,
-    "postminspots":15,
-    "postminfeatures":15
-}

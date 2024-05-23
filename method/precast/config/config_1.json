@@ -3,5 +3,6 @@
     "method": "HVGs",
     "maxIter": 30,
     "postminspots":15,
-    "postminfeatures":15
+    "postminfeatures":15,
+    "Config_rationale": "Lower hvg number for datasets with smaller gene panels"
 }

@@ -3,5 +3,6 @@
     "method": "HVGs",
     "maxIter": 30,
     "postminspots":15,
-    "postminfeatures":15
+    "postminfeatures":15,
+    "reference": "https://feiyoung.github.io/PRECAST/articles/PRECAST.DLPFC4.html"
 }

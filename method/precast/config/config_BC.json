@@ -3,5 +3,6 @@
     "method": "SPARK-X",
     "maxIter": 30,
     "postminspots":1,
-    "postminfeatures":10
+    "postminfeatures":10,
+    "reference": "https://feiyoung.github.io/PRECAST/articles/PRECAST.BreastCancer.html"
 }
