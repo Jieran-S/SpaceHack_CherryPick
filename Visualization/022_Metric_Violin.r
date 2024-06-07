@@ -237,6 +237,8 @@ plot_vio_point
 
 ##### Another filled violin plot -----------------------------------------------
 
+# Reference: https://www.nature.com/articles/s41587-019-0071-9 
+
 dataset_mean <- data[,.(mean = mean(metric_value)), by = dataset
                      ][order(-mean),
                        ]
@@ -253,7 +255,7 @@ densities <-
 densities_stacked <-
   densities %>%
   group_by(method, x) %>%
-  mutate(dataset = factor(dataset, dataset_mean$dataset)) %>% # set order of trajectory types
+  mutate(dataset = factor(dataset, dataset_mean$dataset)) %>% # set order of method performance
   arrange(dataset) %>%
   mutate(norm = sum(y), y = y * y, y = y / sum(y) * norm, y = ifelse(is.na(y), 0, y)) %>% # normalise between 0 and 1
   mutate(ymax = cumsum(y), ymin = lag(ymax, default = 0)) %>%
@@ -279,7 +281,6 @@ plot_vio_density <-
       ymax = ymax_violin + as.numeric(method_id),
       fill = dataset,
       group = paste0(method, dataset),
-      # alpha = dataset %in% !!trajectory_types_oi
     ), position = "identity"
   ) +
   scale_fill_manual(values=wes_dic) +
